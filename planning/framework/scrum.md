@@ -1,19 +1,20 @@
 #Developing-Framework: Scrum
 ### Sprint Planing:
-- Day: Mondays ? or Sundays?
-- Record: Are we keeping a record of what is said ?
+- Day: Mondays
+- Record: We are keeping a Record each meeting
 - ...
 ### Daily Scrum:
-- Form: bbb-Meeting ? WhatsApp-Chat ?
+- Form: WhatsApp-Chat
 - ...
 ### Sprint Review:
-- Day: Mondays ? or Sundays?
-- Record: Are we keeping a record of what is said ?
+- Day: Mondays
+- Record: We are keeping a Record each meeting
 - ...
 ### Sprint Retrospective:
-- Day: Mondays ? or Sundays?
-- Record: Are we keeping a record of what is said ?
+- Day: Mondays 
+- Record: We are keeping a Record each meeting
 - ...
 ### Roles:
 - Product-Owner: Andreas
-- Scrum-Master: ?
+- Scrum-Master: Uranik 
+
