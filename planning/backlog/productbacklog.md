@@ -24,4 +24,7 @@
     - do not report errors for unknown EventTypes or BrowsePaths if not all EventTypes are known to the Server yet
     - do not report errors that might occur depending on the state or the Server or Type of Event
 
--
+- EventQueueOverflowEventType Events
+    - only get published to MonitoredItems that produced the event
+    - bypass the whereClause
+    
