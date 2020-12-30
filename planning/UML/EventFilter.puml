@@ -1,0 +1,45 @@
+@startuml
+
+
+class EventFilter {
+selectClauses[]: SimpleAttributeOperand
+whereClause: ContentFilter
+}
+
+class SimpleAttributeOperand {
+   typeId: NodeId
+   browsePath[]: QualifiedName
+   attributeId: IntegerId
+   indexRange: NumericRange
+}
+
+class ContentFilter {
+    elements[]: ContentFilterElement
+    filterOperator: EnumFilterOperator
+    filterOperands[]: Extensible ParameterFilterOperand
+}
+
+
+enum EnumFilterOperator {
+Equals_0
+IsNull_1
+GreaterThan_2
+LessThan_3
+GreaterThanOrEqual_4
+LessThanOrEqual_5
+Like_6
+Not_7
+Between_8
+InList_9
+And_10
+Or_11
+Cast_12
+BitwiseAnd_16
+BitwiseOr_17
+}
+
+EventFilter <|--  SimpleAttributeOperand
+EventFilter <|--  ContentFilter
+ContentFilter <|-- EnumFilterOperator
+
+@enduml
