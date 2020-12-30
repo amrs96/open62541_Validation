@@ -3,6 +3,7 @@
 ## Woche 1: 04.01 - 11.01 
 ### Überschrift 1
 
+
 ## Woche 2: 11.01 - 18.01
 ### Überschrift 2
   
@@ -23,6 +24,7 @@
 
 ## Woche 8: 08.03 - 15.03
 ### Überschrift 7
+
   
 ## Woche 9, 10: 15.03 - 29.03 
 ### **Klausurphase 2**
