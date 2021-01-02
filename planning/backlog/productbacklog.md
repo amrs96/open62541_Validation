@@ -3,12 +3,14 @@
 - Apply Filter:
     - select Events based on EventTypes specified by SimpleAttributeOperands in the selectClause
     - filter selected events by condition specified in the whereClause
+    - Server is required to expose all its EventTypes, so a client can usefully subscribe to Events.
 
 - generate Result:
     - selectClauseResult
       - should return null in the corresponding field, if in the response of the server there were no corresponding fields to the EventFilter
       - should return null in the corresponding field, if an error was returned
       - if a selected field is temporarily unavailable, there should be a status code representing that information
+      - If the BaseEventType is specified in the SimpleAttributeOperand by the Client, the Server should evaluate the BrowsePath without considering the Type.
     - whereClauseResult
       - contains only those results that are described by a logical expression
       - the logical expression is formed using the SimpleAttributeOperand
