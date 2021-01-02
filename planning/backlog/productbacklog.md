@@ -24,7 +24,13 @@
     - do not report errors for unknown EventTypes or BrowsePaths if not all EventTypes are known to the Server yet
     - do not report errors that might occur depending on the state or the Server or Type of Event
 
-- 
+- selectClauseDiagnosticInfo 
+    - A list of diagnostic information for individual elements in the select clause
+    - his list is empty if diagnostics
+      information was not requested in the request header or if no diagnostic
+      information was encountered in processing of the select clauses
+    - The size and order of the list matches the size and order of the elements
+      in the selectClauses request parameter
 
 - EventQueueOverflowEventType Events
     - to control information to the client
