@@ -20,6 +20,8 @@ class ContentFilter {
 }
 
 class EventFilterResult {
+
+
     selectClauseResults[] : StatusCode
     selectClauseDiagnosticInfos[]: DiagnosticInfo
     whereClauseResult: ContentFilterResult

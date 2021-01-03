@@ -67,9 +67,10 @@
     - whereClauseResult
     
 - EventFilterResult Result Codes
-    - Bad_TypeDefinitionInvalid
-    - Bad_NodeIdUnknown
-    - Bad_BrowseNameInvalid
-    - Bad_AttributeIdInvalid
-    - Bad_IndexRangeInvalid
+    - Bad_TypeDefinitionInvalid: The type definition node id does not reference an appropriate type node
+    - Bad_NodeIdUnknown: the node id refers to a node that does not exist in the Server address space.
+    - Bad_BrowseNameInvalid: The browse name is invalid
+    - Bad_AttributeIdInvalid: The attribute is not supported for the specified node
+    - Bad_IndexRangeInvalid:
     - Bad_TypeMismatch
+- 
