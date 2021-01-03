@@ -16,8 +16,8 @@
     - filter selected events by condition specified in the whereClause (See permitted operands)
     - Server is required to expose all its EventTypes, so a client can usefully subscribe to Events.
 
-3. generate Result:
-    - selectClauseResult
+3. generate Result: (See EventFilterResult result codes)
+    - selectClauseResult 
       - should return null in the corresponding field, if in the response of the server there were no corresponding fields to the EventFilter
       - should return null in the corresponding field, if an error was returned
       - if a selected field is temporarily unavailable, there should be a status code representing that information
@@ -42,8 +42,18 @@
     - to control information to the client
     - only get published to MonitoredItems that produced the event
     - bypass the whereClause
-    
-- Permitted operands:
+
+- Operands: 
+    - are SimpleAttributeOperands
+    - are restricted to TypeDefinitionNode or subtypes by typeId (NodeId of a TypeDefinitionNode)
+    - contain a browsePath which is a relative path to a Node (Nodes followed by the browsePath are NodeClass Objects or Variables)
+        - If this list is empty the Node is the instance of the TypeDefinition
+    - contain an attributeId (Id of the Attribute which is supported by all servers)
+    - contain an indexRange parameter which identifies elements of the array
+        - Is null (All values of an array are used) if not specified 
+        - Is ignored if Node is not a Variable or the Value of the Variable is not an array
+
+- Permitted operations:
     - Equals_0
     - IsNull_1
     - GreaterThan_2
