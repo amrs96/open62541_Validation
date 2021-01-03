@@ -60,6 +60,11 @@
     - OfType_14
     - BitwiseAnd_16
     - BitwiseOr_17
+
+- EventFilterResult structure
+    - selectClauseResult (list of status codes)
+    - selectClauseDiagnosticInfo
+    - whereClauseResult
     
 - EventFilterResult Result Codes
     - Bad_TypeDefinitionInvalid
