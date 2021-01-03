@@ -21,10 +21,13 @@
       - should return null in the corresponding field, if in the response of the server there were no corresponding fields to the EventFilter
       - should return null in the corresponding field, if an error was returned
       - if a selected field is temporarily unavailable, there should be a status code representing that information
+      - if this status code is bad (see table 144) or unknown, the status code itself should be returned instead of the value attribute
       - If the BaseEventType is specified in the SimpleAttributeOperand by the Client, the Server should evaluate the BrowsePath without considering the Type.
     - whereClauseResult
       - contains only those results that are described by a logical expression
       - the logical expression is formed using the SimpleAttributeOperand
+      - a null value is used, if an error occures in the whereClause for a certain event
+      - a null value is used, if the status code is unknown or bad
 
 
 - selectClauseDiagnosticInfo 
