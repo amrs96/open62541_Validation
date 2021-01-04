@@ -46,7 +46,10 @@
     - It is put into the Queue of the
       MonitoredItem in addition to the size of the Queue defined for this MonitoredItem without discarding
       any other Event
-   
+    - If discardOldest is set to TRUE it is put at the beginning of the queue and is never
+      discarded, otherwise at the end. An aggregating Server shall not pass on such an Event
+    - It shall be handled like other connection error scenarios
+      
     
 - EventQueueOverflowEventType Events
     - to control information to the client
