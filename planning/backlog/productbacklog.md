@@ -37,7 +37,17 @@
       information was encountered in processing of the select clauses
     - The size and order of the list matches the size and order of the elements
       in the selectClauses request parameter
-
+      
+-EventQueueOverflowEventType:
+    - If Events are lost, an Event of the type
+      EventQueueOverflowEventType is placed in the queue.
+    - This Event is generated when the first Event
+      has to be discarded on a MonitoredItem subscribing for Events
+    - It is put into the Queue of the
+      MonitoredItem in addition to the size of the Queue defined for this MonitoredItem without discarding
+      any other Event
+   
+    
 - EventQueueOverflowEventType Events
     - to control information to the client
     - only get published to MonitoredItems that produced the event
@@ -82,4 +92,4 @@
     - Bad_BrowseNameInvalid: The browse name is invalid
     - Bad_AttributeIdInvalid: The attribute is not supported for the specified node
     - Bad_IndexRangeInvalid: The syntax of the index range parameter is invalid
-    - Bad_TypeMismatch: The value supplied for the attribute is not of the same type as the attribute's value - 
+    - Bad_TypeMismatch: The value supplied for the attribute is not of the same type as the attribute's value  
