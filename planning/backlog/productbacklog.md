@@ -1,4 +1,4 @@
-#Product-backlog
+##Product-backlog
 
 1. validate filter:
     - validate selectClauses when the EventFilter is created or updated. (See EventFilterResult result codes)
@@ -29,8 +29,7 @@
         - **return diagnostic information** for the individual elements in the select clause
         - **return empty list**, **if** diagnostic information was not requested in the request header 
         - **return empty list**, **if** there was no diagnostic information in processing of the select clauses
-        - *Size and order match size and order of elements in the request*
-
+        - *Size and order match size and order of elements in the request
     - whereClauseResult
       - **return results** that are described by the logical expression
       - **return null**, if an error occures in the whereClause for a certain event
@@ -54,7 +53,7 @@
     - only get published to MonitoredItems that produced the event
     - bypass the whereClause
 
-###Information about Operations in WhereClause
+##Information about Operations in WhereClause
 
 - Operands: 
     - are SimpleAttributeOperands
@@ -84,7 +83,7 @@
     - *BitwiseAnd_16*
     - *BitwiseOr_17*
 
-###Information about EventFilterResult
+##Information about EventFilterResult
 
 - EventFilterResult structure:
     - selectClauseResult (list of status codes)
