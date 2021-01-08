@@ -767,6 +767,235 @@ START_TEST(evaluateWhereClause) {
 }
 END_TEST
 
+START_TEST(legalBooleanOperators) {
+    /* Everything is on the stack, so no memory cleaning required.*/
+    UA_NodeId eventNodeId;
+    UA_StatusCode retval = eventSetup(&eventNodeId);
+    UA_ContentFilter contentFilter;
+    UA_ContentFilter_init(&contentFilter);
+    UA_ContentFilterElement contentFilterElement;
+    UA_ContentFilterElement_init(&contentFilterElement);
+    contentFilter.elements = &contentFilterElement;
+    contentFilter.elementsSize = 1;
+
+    contentFilterElement.filterOperandsSize = 1;
+    /*TODO: Create filterOperand*/
+    contentFilterElement.filterOperands = &filterOperand;
+
+    /* NOT */
+
+    /* AND */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_EQUALS;
+    UA_/*TODO*/ filterOperands = /*TODO*/
+    contentFilterElement.filterOperands = &filterOperands;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+    /* OR */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_EQUALS;
+    UA_/*TODO*/ filterOperands = /*TODO*/
+    contentFilterElement.filterOperands = &filterOperands;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+
+}
+END_TEST
+
+
+START_TEST(legalOperators) {
+    /* Everything is on the stack, so no memory cleaning required.*/
+    UA_NodeId eventNodeId;
+    UA_StatusCode retval = eventSetup(&eventNodeId);
+    UA_ContentFilter contentFilter;
+    UA_ContentFilter_init(&contentFilter);
+    UA_ContentFilterElement contentFilterElement;
+    UA_ContentFilterElement_init(&contentFilterElement);
+    contentFilter.elements = &contentFilterElement;
+    contentFilter.elementsSize = 1;
+
+    /* One operand*/
+    contentFilterElement.filterOperandsSize = 1;
+    /*TODO: Create filterOperand*/
+    contentFilterElement.filterOperands = &filterOperand;
+
+    /* ISNULL */
+
+    /* Two operands */
+    contentFilterElement.filterOperandsSize = 2;
+    /*TODO: Create filterOperands*/
+    contentFilterElement.filterOperands = &filterOperands;
+
+    /* LIKE */
+    /*TODO*/
+
+    /* Three operands */
+    contentFilterElement.filterOperandsSize = 3;
+    /*TODO: Create filterOperands*/
+    contentFilterElement.filterOperands = &filterOperands;
+
+    /* BETWEEN */
+    /*TODO*/
+
+    /* Multiple operands */
+    contentFilterElement.filterOperandsSize = /*TODO*/;
+    /*TODO: Create filterOperands*/
+    contentFilterElement.filterOperands = &filterOperands;
+
+    /* INLIST */
+    /*TODO*/
+}
+END_TEST
+
+START_TEST(legalNotBooleanOperators) {
+    /* Everything is on the stack, so no memory cleaning required.*/
+    UA_NodeId eventNodeId;
+    UA_StatusCode retval = eventSetup(&eventNodeId);
+    UA_ContentFilter contentFilter;
+    UA_ContentFilter_init(&contentFilter);
+    UA_ContentFilterElement contentFilterElement;
+    UA_ContentFilterElement_init(&contentFilterElement);
+    contentFilter.elements = &contentFilterElement;
+    contentFilter.elementsSize = 1;
+
+    contentFilterElement.filterOperandsSize = 2;
+    /*TODO: Create filterOperands*/
+    contentFilterElement.filterOperands = &filterOperands;
+
+    /* BITWISEAND */
+    /*TODO*/
+
+    /* BITWISEOR */
+    /*TODO*/
+
+    /* CAST */
+    /*TODO*/
+}
+END_TEST
+
+
+START_TEST(legalRelationalOperators) {
+    /* Everything is on the stack, so no memory cleaning required.*/
+    UA_NodeId eventNodeId;
+    UA_StatusCode retval = eventSetup(&eventNodeId);
+    UA_ContentFilter contentFilter;
+    UA_ContentFilter_init(&contentFilter);
+    UA_ContentFilterElement contentFilterElement;
+    UA_ContentFilterElement_init(&contentFilterElement);
+    contentFilter.elements = &contentFilterElement;
+    contentFilter.elementsSize = 1;
+
+    contentFilterElement.filterOperandsSize = 2;
+    /*TODO: Create filterOperands*/
+    contentFilterElement.filterOperands = &filterOperands;
+
+    /* Equal values  */
+    /*TODO: Set values*/
+
+    /* EQUALS */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_EQUALS;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+    /* GREATERTHAN */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_GREATERTHAN;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+    /* LESSTHAN */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_LESSTHAN;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+    /* GREATERTHANOREQUAL */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_GREATERTHANOREQUAL;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+    /* LESSTHANOREQUAL */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_LESSTHANOREQUAL;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+
+    /* Unequal values (first value less than second)  */
+    /*TODO: ReSet values*/
+
+    /* EQUALS */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_EQUALS;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+    /* GREATERTHAN */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_GREATERTHAN;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+    /* LESSTHAN */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_LESSTHAN;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+    /* GREATERTHANOREQUAL */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_GREATERTHANOREQUAL;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+    /* LESSTHANOREQUAL */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_LESSTHANOREQUAL;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+
+    /* Unequal values (first value greater than second)  */
+    /*TODO: ReSet values*/
+
+    /* EQUALS */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_EQUALS;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+    /* GREATERTHAN */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_GREATERTHAN;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+    /* LESSTHAN */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_LESSTHAN;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+    /* GREATERTHANOREQUAL */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_GREATERTHANOREQUAL;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+    /* LESSTHANOREQUAL */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_LESSTHANOREQUAL;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+
+}
+END_TEST
+
 #endif /* UA_ENABLE_SUBSCRIPTIONS_EVENTS */
 
 /* Assumes subscriptions work fine with data change because of other unit test */
