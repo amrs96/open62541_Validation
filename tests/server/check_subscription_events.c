@@ -778,28 +778,107 @@ START_TEST(legalBooleanOperators) {
     contentFilter.elements = &contentFilterElement;
     contentFilter.elementsSize = 1;
 
+    /* One operand */
+
     contentFilterElement.filterOperandsSize = 1;
     /*TODO: Create filterOperand*/
     contentFilterElement.filterOperands = &filterOperand;
 
+    /* Operand is FALSE */
+    /*TODO: Set operand*/
+
     /* NOT */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_NOT;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+
+    /* Operand is TRUE */
+    /*TODO: Set operand*/
+
+    /* NOT */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_NOT;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+
+
+    /* Two operands */
+    contentFilterElement.filterOperandsSize = 2;
+    /*TODO: Create filterOperands*/
+    contentFilterElement.filterOperands = &filterOperands;
+
+    /* Both operands are TRUE */
+    /*TODO: Set filterOperands*/
 
     /* AND */
-    contentFilterElement.filterOperator = UA_FILTEROPERATOR_EQUALS;
-    UA_/*TODO*/ filterOperands = /*TODO*/
-    contentFilterElement.filterOperands = &filterOperands;
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_AND;
     UA_LOCK(server->serviceMutex);
     retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
     UA_UNLOCK(server->serviceMutex);
     ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+
     /* OR */
-    contentFilterElement.filterOperator = UA_FILTEROPERATOR_EQUALS;
-    UA_/*TODO*/ filterOperands = /*TODO*/
-    contentFilterElement.filterOperands = &filterOperands;
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_OR;
     UA_LOCK(server->serviceMutex);
     retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
     UA_UNLOCK(server->serviceMutex);
     ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+
+    /* Only first operand is TRUE */
+    /*TODO: Set filterOperands*/
+
+    /* AND */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_AND;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+
+    /* OR */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_OR;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+
+    /* Only second operand is TRUE */
+    /*TODO: Set filterOperands*/
+
+    /* AND */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_AND;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+
+    /* OR */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_OR;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+
+    /* Both operands are FALSE */
+    /*TODO: Set filterOperands*/
+
+    /* AND */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_AND;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+
+    /* OR */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_OR;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+
+
 
 }
 END_TEST
