@@ -821,7 +821,27 @@ START_TEST(legalOperators) {
     /*TODO: Create filterOperand*/
     contentFilterElement.filterOperands = &filterOperand;
 
+    /* Operand is null value */
+    /*TODO: Set operand */
+
     /* ISNULL */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_ISNULL;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_GOOD);
+
+    /* Operand is not null value */
+    /*TODO: Reset operand */
+
+    /* ISNULL */
+    contentFilterElement.filterOperator = UA_FILTEROPERATOR_ISNULL;
+    UA_LOCK(server->serviceMutex);
+    retval = UA_Server_evaluateWhereClauseContentFilter(server, &eventNodeId, &contentFilter);
+    UA_UNLOCK(server->serviceMutex);
+    ck_assert_uint_eq(retval, UA_STATUSCODE_BADNOMATCH);
+
+
 
     /* Two operands */
     contentFilterElement.filterOperandsSize = 2;
