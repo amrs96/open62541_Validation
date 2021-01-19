@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
     signal(SIGINT, stopHandler);
     signal(SIGTERM, stopHandler);
 
-    if(argc < 2) {
+    if(argc < 1) {
         printf("Usage: tutorial_client_events <opc.tcp://server-url>\n");
         return EXIT_FAILURE;
     }
@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
 
     /* opc.tcp://uademo.prosysopc.com:53530/OPCUA/SimulationServer */
     /* opc.tcp://opcua.demo-this.com:51210/UA/SampleServer */
-    UA_StatusCode retval = UA_Client_connect(client, argv[1]);
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://ammar:4840/");
     if(retval != UA_STATUSCODE_GOOD) {
         UA_Client_delete(client);
         return EXIT_FAILURE;
@@ -174,7 +174,7 @@ int main(int argc, char *argv[]) {
         retval = UA_Client_run_iterate(client, 100);
 
     /* Delete the subscription */
- cleanup:
+    cleanup:
     UA_MonitoredItemCreateResult_clear(&result);
     UA_Client_Subscriptions_deleteSingle(client, response.subscriptionId);
     UA_Array_delete(filter.selectClauses, nSelectClauses, &UA_TYPES[UA_TYPES_SIMPLEATTRIBUTEOPERAND]);

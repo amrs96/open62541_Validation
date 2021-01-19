@@ -1,0 +1,102 @@
+@startuml
+class BaseEventType  {
+BrowseName: BaseEventType
+IsAbstract: True
+EventId: ByteString
+EventType: NodeId
+SourceNode: NodeId
+SourceName: String
+Time: UtcTime
+ReceiveTime: UtcTime
+LocalTime: TimeZoneDataType
+Message: LocalizedText
+Severity: UInt16
+}
+
+class AuditEventType {
+
+}
+
+class SystemEventType {
+
+}
+
+class BaseModelChangeEventType {
+
+}
+
+class SemanticChangeEventType{
+
+}
+
+class EventQueueOverflowEventType{
+
+}
+
+class ProgressEventType{
+
+}
+
+
+
+class EventFilter {
+selectClauses[]: SimpleAttributeOperand
+whereClause: ContentFilter
+}
+
+class SimpleAttributeOperand {
+   typeId: NodeId
+   browsePath[]: QualifiedName
+   attributeId: IntegerId
+   indexRange: NumericRange
+}
+
+class ContentFilter {
+    elements[]: ContentFilterElement
+    filterOperator: EnumFilterOperator
+    filterOperands[]: Extensible ParameterFilterOperand
+}
+
+class EventFilterResult {
+
+
+    selectClauseResults[] : StatusCode
+    selectClauseDiagnosticInfos[]: DiagnosticInfo
+    whereClauseResult: ContentFilterResult
+}
+
+class ContentFilterResult {
+    elementResults[]: ContentFilterElementResult
+    statusCode: StatusCode
+    operandStatusCodes[]: StatusCode
+    operandDiagnosticInfos[]: DiagnosticInfo
+    elementDiagnosticInfos[]: DiagnosticInfo
+
+}
+
+
+
+enum EnumFilterOperator {
+Equals_0
+IsNull_1
+GreaterThan_2
+LessThan_3
+GreaterThanOrEqual_4
+LessThanOrEqual_5
+Like_6
+Not_7
+Between_8
+InList_9
+And_10
+Or_11
+Cast_12
+BitwiseAnd_16
+BitwiseOr_17
+}
+
+EventFilter <|--  SimpleAttributeOperand
+EventFilter <|--  ContentFilter
+ContentFilter <|-- EnumFilterOperator
+EventFilterResult <|-- ContentFilterResult
+
+@enduml
