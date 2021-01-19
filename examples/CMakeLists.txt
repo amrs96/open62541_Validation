@@ -73,6 +73,7 @@ add_example(tutorial_datatypes tutorial_datatypes.c)
 
 add_example(tutorial_server_firststeps tutorial_server_firststeps.c)
 
+
 add_example(tutorial_server_variable tutorial_server_variable.c)
 
 add_example(tutorial_server_datasource tutorial_server_datasource.c)
@@ -97,6 +98,7 @@ endif()
 add_example(tutorial_client_firststeps tutorial_client_firststeps.c)
 
 add_example(tutorial_client_events tutorial_client_events.c)
+add_example(tutorial_client_events_filter.c tutorial_client_events_filter.c)
 
 if(UA_ENABLE_SUBSCRIPTIONS_EVENTS)
   add_example(tutorial_server_events tutorial_server_events.c)

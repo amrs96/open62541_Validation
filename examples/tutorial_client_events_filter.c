@@ -67,6 +67,44 @@ handler_events(UA_Client *client, UA_UInt32 subId, void *subContext,
 
 const size_t nSelectClauses = 2;
 
+
+
+/**
+ * ContentFilter
+ * ^^^^^^^^^^^^^
+typedef struct {
+    size_t elementsSize;
+    UA_ContentFilterElement *elements;
+} UA_ContentFilter;
+
+ * ContentFilterElement
+ * ^^^^^^^^^^^^^^^^^^^^
+
+typedef struct {
+    UA_FilterOperator filterOperator;
+    size_t filterOperandsSize;
+    UA_ExtensionObject *filterOperands;
+} UA_ContentFilterElement;
+
+ */
+
+
+static UA_ContentFilter *setupWhereClauses(void){
+    UA_ContentFilter *contentFilter = UA_ContentFilter_new();
+    UA_ContentFilter_init(contentFilter);
+    contentFilter->elementsSize = 1;
+    UA_ContentFilterElement *contentFilterElements = UA_ContentFilterElement_new();
+    UA_ContentFilterElement_init(contentFilterElements);
+    contentFilter->elements = contentFilterElements;
+    contentFilterElements[0].filterOperator = UA_FILTEROPERATOR_OFTYPE;
+    contentFilterElements[0].filterOperandsSize = 1;
+    contentFilterElements[0].filterOperands[0].content.decoded.type = &UA_TYPES[UA_TYPES_LITERALOPERAND];
+    contentFilterElements[0].filterOperands[0].content.decoded.data = NULL;
+
+    return contentFilter;
+}
+
+
 static UA_SimpleAttributeOperand *
 setupSelectClauses(void) {
     UA_SimpleAttributeOperand *selectClauses = (UA_SimpleAttributeOperand*)

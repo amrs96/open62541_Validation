@@ -133,7 +133,7 @@ option(UA_ENABLE_HISTORIZING "Enable basic support for historical access (client
 option(UA_ENABLE_METHODCALLS "Enable the Method service set" ON)
 option(UA_ENABLE_NODEMANAGEMENT "Enable dynamic addition and removal of nodes at runtime" ON)
 option(UA_ENABLE_SUBSCRIPTIONS "Enable subscriptions support." ON)
-option(UA_ENABLE_SUBSCRIPTIONS_EVENTS "Enable the use of event subscriptions" ON)
+option(UA_ENABLE_SUBSCRIPTIONS_EVENTS "Enable the use of event subscriptions" OFF)
 option(UA_ENABLE_DISCOVERY "Enable Discovery Service (LDS)" OFF)
 option(UA_ENABLE_SUBSCRIPTIONS_ALARMS_CONDITIONS "Enable the use of A&C. (EXPERIMENTAL)" OFF)
 option(UA_ENABLE_DISCOVERY_MULTICAST "Enable Discovery Service with multicast support (LDS-ME)" OFF)
@@ -398,7 +398,7 @@ if(CMAKE_VERSION VERSION_GREATER 3.6)
 endif()
 
 # Build Targets
-option(UA_BUILD_EXAMPLES "Build example servers and clients" ON)
+option(UA_BUILD_EXAMPLES "Build example servers and clients" OFF)
 option(UA_BUILD_TOOLS "Build OPC UA shell tools" OFF)
 option(UA_BUILD_UNIT_TESTS "Build the unit tests" OFF)
 option(UA_BUILD_FUZZING "Build the fuzzing executables" OFF)
@@ -979,7 +979,7 @@ endif()
 if(UA_BUILD_FUZZING OR UA_BUILD_OSS_FUZZ)
     set(lib_sources
         ${lib_sources}
-        ${PROJECT_SOURCE_DIR}/tests/fuzz/custom_memory_manager.c examples/Example_ClientFilter_Events.c)
+        ${PROJECT_SOURCE_DIR}/tests/fuzz/custom_memory_manager.c)
 endif()
 
 #########################
