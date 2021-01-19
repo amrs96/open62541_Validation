@@ -14,89 +14,141 @@ Severity: UInt16
 }
 
 class AuditEventType {
+BrowseName: AuditEventType
+IsAbstract: Boolean
+ActionTimeStamp: UtcTime
+Status: Boolean
+ServerId: String
+ClientAuditEntryId: String
+ClientUserId: String
+}
+
+class AuditSecurityEventType{
+BrowseName: AuditSecurityEventType
+IsAbstract: Boolean
+StatusCodeId: StatusCode
+}
+
+class AuditChannelEventType{
+BrowseName: AuditChannelEventType
+IsAbstract: Booolean
+SecureChannelId: String
+}
+class AuditOpenSecureChannelEventType{
+BrowseName: AuditOpenSecureChannelEventType
+IsAbstract: Boolean
+ClientCertificate: ByteString
+ClientCertificateThumbprint: String
+RequestType: SecurityTokenRequestType
+SecurityPolicyUri: String
+SecurityMode: MessageSecurityMode
+RequestedLifetime:Duration
+}
+class AuditOpenSecureChannelEventType{
+BrowseName: AuditOpenSecureChannelEventType
+IsAbstract: Boolean
+ClientCertificate: ByteString
+ClientCertificateThumbprint: String
+RequestType: SecurityTokenRequestType
+SecurityPolicyUri: String
+SecurityMode: MessageSecurityMode
+RequestedLifetime: Duration
+}
+
+
+
+class AuditSessionEventType{
+BrowseName: AuditSessionEventType
+IsAbstract: Boolean
+SessionId: NodeId
+}
+class AuditCreateSessionEventType{
+BrowseName: AuditCreateSessionEventType
+IsAbstract: Boolean
+SecureChannelId: String
+ClientCertificate: ByteString
+ClientCertificateThumbprint: String
+RevisedSessionTimeout: Duration
+}
+class AuditUrlMismatchEventType{
+BrowseName: AuditUrlMismatchEventType
+IsAbstract: Boolean
+EndpointUrl:String
+}
+class AuditActivateSessionEventType{
+
+}
+class AuditCancelEventType{
+
+}
+
+class AuditCertificateEventType{
+
+}
+
+class AuditNodeManagementEventType{
+
+}
+class AuditUpdateEventType{
+
+}
+class AuditUpdateMethodEventType{
 
 }
 
 class SystemEventType {
-
+BrowseName: SystemEventType
+IsAbstract: Boolean
 }
 
 class BaseModelChangeEventType {
-
+BrowseName: BaseModelChangeEventType
+IsAbstract: boolean
 }
 
 class SemanticChangeEventType{
-
+BrowseName: SemanticChangeEventType
+IsAbstract: Boolean
+Changes: SemanticChangeStructureDataType[]
 }
 
 class EventQueueOverflowEventType{
-
+BrowseName: EventQueueOverflowEventType
+IsAbstract: Boolean
 }
 
 class ProgressEventType{
-
+BrowseName: ProgressEventType
+IsAbstract: boolean
+Context: BaseDataType
+Progress: UInt16
 }
 
 
 
-class EventFilter {
-selectClauses[]: SimpleAttributeOperand
-whereClause: ContentFilter
-}
 
-class SimpleAttributeOperand {
-   typeId: NodeId
-   browsePath[]: QualifiedName
-   attributeId: IntegerId
-   indexRange: NumericRange
-}
+BaseEventType <|--  AuditEventType
+BaseEventType <|--  SystemEventType
+BaseEventType <|--  BaseModelChangeEventType
+BaseEventType <|--  SemanticChangeEventType
+BaseEventType <|--  EventQueueOverflowEventType
+BaseEventType <|--  ProgressEventType
 
-class ContentFilter {
-    elements[]: ContentFilterElement
-    filterOperator: EnumFilterOperator
-    filterOperands[]: Extensible ParameterFilterOperand
-}
+AuditEventType <|-- AuditSecurityEventType
+AuditEventType <|-- AuditNodeManagementEventType
+AuditEventType <|-- AuditUpdateEventType
+AuditEventType <|-- AuditUpdateMethodEventType
 
-class EventFilterResult {
+AuditSecurityEventType <|-- AuditChannelEventType
+AuditSecurityEventType <|-- AuditSessionEventType
+AuditSecurityEventType <|-- AuditCertificateEventType
 
+AuditChannelEventType <|-- AuditOpenSecureChannelEventType
 
-    selectClauseResults[] : StatusCode
-    selectClauseDiagnosticInfos[]: DiagnosticInfo
-    whereClauseResult: ContentFilterResult
-}
-
-class ContentFilterResult {
-    elementResults[]: ContentFilterElementResult
-    statusCode: StatusCode
-    operandStatusCodes[]: StatusCode
-    operandDiagnosticInfos[]: DiagnosticInfo
-    elementDiagnosticInfos[]: DiagnosticInfo
-
-}
+AuditSessionEventType <|-- AuditCreateSessionEventType
+AuditSessionEventType <|-- AuditActivateSessionEventType
+AuditSessionEventType <|-- AuditCancelEventType
 
 
-
-enum EnumFilterOperator {
-Equals_0
-IsNull_1
-GreaterThan_2
-LessThan_3
-GreaterThanOrEqual_4
-LessThanOrEqual_5
-Like_6
-Not_7
-Between_8
-InList_9
-And_10
-Or_11
-Cast_12
-BitwiseAnd_16
-BitwiseOr_17
-}
-
-EventFilter <|--  SimpleAttributeOperand
-EventFilter <|--  ContentFilter
-ContentFilter <|-- EnumFilterOperator
-EventFilterResult <|-- ContentFilterResult
-
+AuditCreateSessionEventType <|-- AuditUrlMismatchEventType
 @enduml
