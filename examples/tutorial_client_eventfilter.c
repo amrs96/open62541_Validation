@@ -165,7 +165,7 @@ int main(int argc, char *argv[]) {
     signal(SIGINT, stopHandler);
     signal(SIGTERM, stopHandler);
 
-    if(argc < 1) {
+    if(argc < 1) {  // geändert, damit auf Cilon direkt mit dem Server verbinden zu können
         printf("Usage: tutorial_client_events <opc.tcp://server-url>\n");
         return EXIT_FAILURE;
     }
@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
 
     /* opc.tcp://uademo.prosysopc.com:53530/OPCUA/SimulationServer */
     /* opc.tcp://opcua.demo-this.com:51210/UA/SampleServer */
-    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://ammar:4840/");
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://ammar:4840/"); // geändert, damit auf Cilon direkt mit dem Server verbinden zu können
     if(retval != UA_STATUSCODE_GOOD) {
         UA_Client_delete(client);
         return EXIT_FAILURE;
