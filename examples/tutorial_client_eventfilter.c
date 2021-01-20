@@ -66,6 +66,7 @@ handler_events(UA_Client *client, UA_UInt32 subId, void *subContext,
 }
 
 const size_t nSelectClauses = 2;
+const size_t nWhereClauses = 1;
 
 
 
@@ -79,7 +80,7 @@ typedef struct {
 
  * ContentFilterElement
  * ^^^^^^^^^^^^^^^^^^^^
-
+ *
 typedef struct {
     UA_FilterOperator filterOperator;
     size_t filterOperandsSize;
@@ -90,16 +91,33 @@ typedef struct {
 
 
 static UA_ContentFilter *setupWhereClauses(void){
-    UA_ContentFilter *contentFilter = UA_ContentFilter_new();
-    UA_ContentFilter_init(contentFilter);
-    contentFilter->elementsSize = 1;
-    UA_ContentFilterElement *contentFilterElements = UA_ContentFilterElement_new();
-    UA_ContentFilterElement_init(contentFilterElements);
-    contentFilter->elements = contentFilterElements;
-    contentFilterElements[0].filterOperator = UA_FILTEROPERATOR_OFTYPE;
-    contentFilterElements[0].filterOperandsSize = 1;
-    contentFilterElements[0].filterOperands[0].content.decoded.type = &UA_TYPES[UA_TYPES_LITERALOPERAND];
-    contentFilterElements[0].filterOperands[0].content.decoded.data = NULL;
+    UA_ContentFilter *contentFilter = (UA_ContentFilter*)
+        UA_Array_new(nWhereClauses,&UA_TYPES[UA_TYPES_CONTENTFILTER]);
+
+    for(size_t i =0; i<nWhereClauses; ++i) {
+        UA_ContentFilter_init(&contentFilter[i]);
+    }
+
+    contentFilter[0].elementsSize = 1;
+
+    contentFilter[0].elements  = (UA_ContentFilterElement*)
+        UA_Array_new(contentFilter->elementsSize, &UA_TYPES[UA_TYPES_CONTENTFILTERELEMENT] );
+
+    contentFilter[0].elements[0].filterOperator = UA_FILTEROPERATOR_OFTYPE;
+    contentFilter[0].elements[0].filterOperandsSize = 1;
+    contentFilter[0].elements[0].filterOperands = (UA_ExtensionObject*)
+        UA_Array_new(contentFilter[0].elements[0].filterOperandsSize, &UA_TYPES[UA_TYPES_EXTENSIONOBJECT]);
+    if (!contentFilter[0].elements[0].filterOperands){
+        UA_ContentFilter_clear(contentFilter);
+        return NULL;
+    }
+
+    //if(src->content.decoded.type->typeId.identifierType != UA_NODEIDTYPE_NUMERIC)
+
+
+    contentFilter[0].elements[0].filterOperands[0].content.encoded.body = UA_BYTESTRING_NULL;
+    contentFilter[0].elements[0].filterOperands[0].content.encoded.typeId = UA_NODEID_NUMERIC(0,UA_NS0ID_BASEEVENTTYPE);
+    contentFilter[0].elements[0].filterOperands[0].encoding = UA_EXTENSIONOBJECT_ENCODED_NOBODY;
 
     return contentFilter;
 }
@@ -147,7 +165,7 @@ int main(int argc, char *argv[]) {
     signal(SIGINT, stopHandler);
     signal(SIGTERM, stopHandler);
 
-    if(argc < 2) {
+    if(argc < 1) {
         printf("Usage: tutorial_client_events <opc.tcp://server-url>\n");
         return EXIT_FAILURE;
     }
@@ -157,7 +175,7 @@ int main(int argc, char *argv[]) {
 
     /* opc.tcp://uademo.prosysopc.com:53530/OPCUA/SimulationServer */
     /* opc.tcp://opcua.demo-this.com:51210/UA/SampleServer */
-    UA_StatusCode retval = UA_Client_connect(client, argv[1]);
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://ammar:4840/");
     if(retval != UA_STATUSCODE_GOOD) {
         UA_Client_delete(client);
         return EXIT_FAILURE;
@@ -187,6 +205,10 @@ int main(int argc, char *argv[]) {
     UA_EventFilter_init(&filter);
     filter.selectClauses = setupSelectClauses();
     filter.selectClausesSize = nSelectClauses;
+    filter.whereClause = *setupWhereClauses();
+
+
+
 
     item.requestedParameters.filter.encoding = UA_EXTENSIONOBJECT_DECODED;
     item.requestedParameters.filter.content.decoded.data = &filter;

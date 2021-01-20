@@ -32,7 +32,7 @@ addNewEventType(UA_Server *server) {
     attr.displayName = UA_LOCALIZEDTEXT("en-US", "SimpleEventType");
     attr.description = UA_LOCALIZEDTEXT("en-US", "The simple event type we created");
     return UA_Server_addObjectTypeNode(server, UA_NODEID_NULL,
-                                       UA_NODEID_NUMERIC(0, UA_NS0ID_BASEEVENTTYPE),// das ist imEnd Effekt das Objekt das
+                                       UA_NODEID_NUMERIC(0, UA_NS0ID_BASEEVENTTYPE),
                                        UA_NODEID_NUMERIC(0, UA_NS0ID_HASSUBTYPE),
                                        UA_QUALIFIEDNAME(0, "SimpleEventType"),
                                        attr, NULL, &eventType);
