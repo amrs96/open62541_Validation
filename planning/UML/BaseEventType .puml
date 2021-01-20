@@ -76,14 +76,48 @@ IsAbstract: Boolean
 EndpointUrl:String
 }
 class AuditActivateSessionEventType{
-
+BrowseName: AuditActivateSessionEventType
+IsAbstract: Boolean
+ClientSoftwareCertificates: SignedSoftwareCertificate[]
+UserIdentityToken: UserIdentityToken
+SecureChannelId: String
 }
 class AuditCancelEventType{
-
+BrowseName: AuditCancelEventType
+IsAbstract: Boolean
+RequestHandle: UInt32
 }
 
 class AuditCertificateEventType{
-
+BrowseName: AuditCertificateEventType
+IsAbstract: Boolean
+Certificate: ByteString
+}
+class AuditCertificateDataMismatchEventType{
+BrowseName: AuditCertificateDataMismatchEventType
+IsAbstract: Boolean
+InvalidHostname: String
+InvalidUri: String
+}
+class AuditCertificateExpiredEventType{
+BrowseName: AuditCertificateExpiredEventType
+IsAbstract: Boolean
+}
+class AuditCertificateInvalidEventType{
+BrowseName: AuditCertificateInvalidEventType
+IsAbstract: Boolean
+}
+class AuditCertificateUntrustedEventType{
+BrowseName: AuditCertificateUntrustedEventType
+IsAbstract: Boolean
+}
+class AuditCertificateRevokedEventType{
+BrowseName: AuditCertificateRevokedEventType
+IsAbstract: Boolean
+}
+class AuditCertificateMismatchEventType{
+BrowseName: AuditCertificateMismatchEventType
+IsAbstract: Boolean
 }
 
 class AuditNodeManagementEventType{
@@ -151,4 +185,14 @@ AuditSessionEventType <|-- AuditCancelEventType
 
 
 AuditCreateSessionEventType <|-- AuditUrlMismatchEventType
+
+AuditCertificateEventType <|-- AuditCertificateDataMismatchEventType
+AuditCertificateEventType <|-- AuditCertificateExpiredEventType
+AuditCertificateEventType <|-- AuditCertificateInvalidEventType
+AuditCertificateEventType <|-- AuditCertificateUntrustedEventType
+AuditCertificateEventType <|-- AuditCertificateRevokedEventType
+AuditCertificateEventType <|-- AuditCertificateMismatchEventType
+
+
+
 @enduml
