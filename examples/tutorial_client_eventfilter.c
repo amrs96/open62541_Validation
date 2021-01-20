@@ -112,12 +112,16 @@ static UA_ContentFilter *setupWhereClauses(void){
         return NULL;
     }
 
-    //if(src->content.decoded.type->typeId.identifierType != UA_NODEIDTYPE_NUMERIC)
 
+    contentFilter[0].elements[0].filterOperands[0].content.decoded.type = &UA_TYPES[UA_TYPES_FILTEROPERAND];
 
-    contentFilter[0].elements[0].filterOperands[0].content.encoded.body = UA_BYTESTRING_NULL;
-    contentFilter[0].elements[0].filterOperands[0].content.encoded.typeId = UA_NODEID_NUMERIC(0,UA_NS0ID_BASEEVENTTYPE);
-    contentFilter[0].elements[0].filterOperands[0].encoding = UA_EXTENSIONOBJECT_ENCODED_NOBODY;
+    UA_NodeId *eventType;
+    eventType = UA_NodeId_new();
+    UA_NodeId_init(eventType);
+    *eventType = UA_NODEID_NUMERIC(0, UA_NS0ID_BASEEVENTTYPE);
+
+    contentFilter[0].elements[0].filterOperands[0].content.decoded.data = eventType;
+    contentFilter[0].elements[0].filterOperands[0].encoding = UA_EXTENSIONOBJECT_DECODED;
 
     return contentFilter;
 }
