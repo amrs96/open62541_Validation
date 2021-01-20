@@ -55,8 +55,6 @@ SecurityMode: MessageSecurityMode
 RequestedLifetime: Duration
 }
 
-
-
 class AuditSessionEventType{
 BrowseName: AuditSessionEventType
 IsAbstract: Boolean
@@ -121,23 +119,70 @@ IsAbstract: Boolean
 }
 
 class AuditNodeManagementEventType{
+BrowseName: AuditNodeManagementEventType
+IsAbstract: Boolean
+}
+class AuditAddNodesEventType{
 
 }
+class AuditDeleteNodesEventType{
+
+}
+class AuditAddReferencesEventType{
+
+}
+class AuditDeleteReferencesEventType{
+
+}
+
+
 class AuditUpdateEventType{
-
+BrowseName: AuditUpdateEventType
+IsAbstract: Boolean
 }
-class AuditUpdateMethodEventType{
+class AuditWriteUpdateEventType{
+BrowseName: AuditWriteUpdateEventType
+IsAbstract: Boolean
+AttributeId: UInt32
+IndexRange: NumericRange
+NewValue: BaseDataType
+OldValue: BaseDataType
+}
+class AuditHistoryUpdateEventType{
+BrowseName: AuditHistoryUpdateEventType
+IsAbstract: Boolean
+ParameterDataTypeId: NodeId
+}
 
+class AuditUpdateMethodEventType{
+BrowseName: AuditUpdateMethodEventType
+IsAbstract: Boolean
+MethodId: NodeId
+InputArguments: BaseDataType[]
 }
 
 class SystemEventType {
 BrowseName: SystemEventType
 IsAbstract: Boolean
 }
+class DeviceFailureEventType{
+BrowseName: DeviceFailureEventType
+IsAbstract: boolean
+}
+class SystemStatusChangeEventType{
+BrowseName: SystemStatusChangeEventType
+IsAbstract: boolean
+SystemState: ServerState
+}
 
 class BaseModelChangeEventType {
 BrowseName: BaseModelChangeEventType
 IsAbstract: boolean
+}
+class GeneralModelChangeEventType {
+BrowseName: GeneralModelChangeEventType
+IsAbstract: boolean
+Changes: ModelChangeStructureDataType[]
 }
 
 class SemanticChangeEventType{
@@ -193,6 +238,16 @@ AuditCertificateEventType <|-- AuditCertificateUntrustedEventType
 AuditCertificateEventType <|-- AuditCertificateRevokedEventType
 AuditCertificateEventType <|-- AuditCertificateMismatchEventType
 
+AuditNodeManagementEventType <|-- AuditAddNodesEventType
+AuditNodeManagementEventType <|-- AuditDeleteNodesEventType
+AuditNodeManagementEventType <|-- AuditAddReferencesEventType
+AuditNodeManagementEventType <|-- AuditDeleteReferencesEventType
 
+AuditUpdateEventType <|-- AuditWriteUpdateEventType
+AuditUpdateEventType <|-- AuditHistoryUpdateEventType
 
+SystemEventType <|-- DeviceFailureEventType
+SystemEventType <|-- SystemStatusChangeEventType
+
+BaseModelChangeEventType <|-- GeneralModelChangeEventType
 @enduml
