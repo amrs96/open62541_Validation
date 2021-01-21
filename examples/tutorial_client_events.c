@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
 
     /* opc.tcp://uademo.prosysopc.com:53530/OPCUA/SimulationServer */
     /* opc.tcp://opcua.demo-this.com:51210/UA/SampleServer */
-    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://ammar:4840/");
+    UA_StatusCode retval = UA_Client_connect(client, "opc.tcp://aboahmad-ThinkPad-L560:4840/");
     if(retval != UA_STATUSCODE_GOOD) {
         UA_Client_delete(client);
         return EXIT_FAILURE;

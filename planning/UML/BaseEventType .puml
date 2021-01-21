@@ -123,16 +123,20 @@ BrowseName: AuditNodeManagementEventType
 IsAbstract: Boolean
 }
 class AuditAddNodesEventType{
-
+BrowseName: AuditAddNodesEventType
+IsAbstract: Boolean
 }
 class AuditDeleteNodesEventType{
-
+BrowseName: AuditDeleteNodesEventType
+IsAbstract: Boolean
 }
 class AuditAddReferencesEventType{
-
+BrowseName: AuditAddReferencesEventType
+IsAbstract: Boolean
 }
 class AuditDeleteReferencesEventType{
-
+BrowseName: AuditDeleteReferencesEventType
+IsAbstract: Boolean
 }
 
 
