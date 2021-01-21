@@ -70,25 +70,6 @@ const size_t nWhereClauses = 1;
 
 
 
-/**
- * ContentFilter
- * ^^^^^^^^^^^^^
-typedef struct {
-    size_t elementsSize;
-    UA_ContentFilterElement *elements;
-} UA_ContentFilter;
-
- * ContentFilterElement
- * ^^^^^^^^^^^^^^^^^^^^
- *
-typedef struct {
-    UA_FilterOperator filterOperator;
-    size_t filterOperandsSize;
-    UA_ExtensionObject *filterOperands;
-} UA_ContentFilterElement;
-
- */
-
 
 static UA_ContentFilter *setupWhereClauses(void){
     UA_ContentFilter *contentFilter = (UA_ContentFilter*)
@@ -125,8 +106,8 @@ static UA_ContentFilter *setupWhereClauses(void){
     UA_NodeId *baseEventTypeId;
     baseEventTypeId = UA_NodeId_new();
     UA_NodeId_init(baseEventTypeId);
-    *baseEventTypeId = UA_NODEID_NUMERIC(0, UA_NS0ID_BASEEVENTTYPE);  // filtern nach BaseEventType
-    //*baseEventTypeId = UA_NODEID_NUMERIC(0, UA_NS0ID_AUDITEVENTTYPE);      // filtern nach AuditEventType
+    //*baseEventTypeId = UA_NODEID_NUMERIC(0, UA_NS0ID_BASEEVENTTYPE);  // filtern nach BaseEventType
+    *baseEventTypeId = UA_NODEID_NUMERIC(0, UA_NS0ID_AUDITEVENTTYPE);      // filtern nach AuditEventType
 
 
     pOperand->value.data = baseEventTypeId;
