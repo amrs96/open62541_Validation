@@ -113,14 +113,27 @@ static UA_ContentFilter *setupWhereClauses(void){
     }
 
 
-    contentFilter[0].elements[0].filterOperands[0].content.decoded.type = &UA_TYPES[UA_TYPES_FILTEROPERAND];
+    contentFilter[0].elements[0].filterOperands[0].content.decoded.type = &UA_TYPES[UA_TYPES_LITERALOPERAND];
 
-    UA_NodeId *eventType;
-    eventType = UA_NodeId_new();
-    UA_NodeId_init(eventType);
-    *eventType = UA_NODEID_NUMERIC(0, UA_NS0ID_BASEEVENTTYPE);
+    UA_LiteralOperand *pOperand;
+    pOperand = UA_LiteralOperand_new();
+    UA_LiteralOperand_init(pOperand);
+    pOperand->value.type = &UA_TYPES[UA_TYPES_NODEID];
+    pOperand->value.storageType = UA_VARIANT_DATA;
 
-    contentFilter[0].elements[0].filterOperands[0].content.decoded.data = eventType;
+
+    UA_NodeId *baseEventTypeId;
+    baseEventTypeId = UA_NodeId_new();
+    UA_NodeId_init(baseEventTypeId);
+    *baseEventTypeId = UA_NODEID_NUMERIC(0, UA_NS0ID_BASEEVENTTYPE);  // filtern nach BaseEventType
+    //*baseEventTypeId = UA_NODEID_NUMERIC(0, UA_NS0ID_AUDITEVENTTYPE);      // filtern nach AuditEventType
+
+
+    pOperand->value.data = baseEventTypeId;
+
+
+
+    contentFilter[0].elements[0].filterOperands[0].content.decoded.data = pOperand;
     contentFilter[0].elements[0].filterOperands[0].encoding = UA_EXTENSIONOBJECT_DECODED;
 
     return contentFilter;
