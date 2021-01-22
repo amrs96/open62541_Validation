@@ -1,17 +1,17 @@
 #Developing-Framework: Scrum
 ### Sprint Planing:
-- Day: Mondays
+- Day: Freitag
 - Record: We are keeping a Record each meeting
 - ...
 ### Daily Scrum:
-- Form: WhatsApp-Chat
+- Day: Wednesday
 - ...
 ### Sprint Review:
-- Day: Mondays
+- Day: Freitag
 - Record: We are keeping a Record each meeting
 - ...
 ### Sprint Retrospective:
-- Day: Mondays 
+- Day: Freitag 
 - Record: We are keeping a Record each meeting
 - ...
 ### Roles:
