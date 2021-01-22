@@ -98,7 +98,7 @@ endif()
 add_example(tutorial_client_firststeps tutorial_client_firststeps.c)
 
 add_example(tutorial_client_events tutorial_client_events.c)
-add_example(tutorial_client_events_filter.c tutorial_client_events_filter.c)
+add_example(tutorial_client_eventfilter.c tutorial_client_eventfilter.c)
 
 if(UA_ENABLE_SUBSCRIPTIONS_EVENTS)
   add_example(tutorial_server_events tutorial_server_events.c)

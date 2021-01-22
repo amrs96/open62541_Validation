@@ -28,11 +28,11 @@
  * a meaningful filter. `EventTypes` are saved internally as `ObjectTypes`,
  * so add the a few types as you would new `ObjectTypes`. */
 
-static int eventTypesCount = 5;
+static size_t eventTypesCount = 5;
 static UA_NodeId* eventTypes;
 
 static UA_StatusCode
-addEventType(UA_Server *server, char* name, UA_NodeId parentNodeId, UA_NodeId eventType) {
+addEventType(UA_Server *server, char* name, UA_NodeId parentNodeId, UA_NodeId* eventType) {
     UA_ObjectTypeAttributes attr = UA_ObjectTypeAttributes_default;
     attr.displayName = UA_LOCALIZEDTEXT("en-US", name);
     attr.description = UA_LOCALIZEDTEXT("en-US", "This is a sample event type we created");
@@ -40,7 +40,7 @@ addEventType(UA_Server *server, char* name, UA_NodeId parentNodeId, UA_NodeId ev
                                        parentNodeId,
                                        UA_NODEID_NUMERIC(0, UA_NS0ID_HASSUBTYPE),
                                        UA_QUALIFIEDNAME(0, name),
-                                       attr, NULL, &eventType);
+                                       attr, NULL, eventType);
 
     if (retval != UA_STATUSCODE_GOOD) {
         UA_LOG_WARNING(UA_Log_Stdout, UA_LOGCATEGORY_SERVER,
@@ -51,26 +51,28 @@ addEventType(UA_Server *server, char* name, UA_NodeId parentNodeId, UA_NodeId ev
 
 static UA_StatusCode
 addSampleEventTypes(UA_Server *server) {
-    eventTypes = (UA_NodeId*) UA_Array_new((size_t) eventTypesCount, &UA_TYPES[UA_TYPES_NODEID]);
+    eventTypes = (UA_NodeId*)
+         UA_Array_new(eventTypesCount, &UA_TYPES[UA_TYPES_NODEID]);
 
 
-    UA_StatusCode retval = addEventType(server, "SampleEventQueueOverflowEventType", UA_NODEID_NUMERIC(0, UA_NS0ID_EVENTQUEUEOVERFLOWEVENTTYPE), ((UA_NodeId*) eventTypes)[0]);
+    UA_StatusCode retval = addEventType(server, "SampleEventQueueOverflowEventType", UA_NODEID_NUMERIC(0, UA_NS0ID_EVENTQUEUEOVERFLOWEVENTTYPE), &eventTypes[0]);
     if (retval != UA_STATUSCODE_GOOD) return retval;
 
-    retval = addEventType(server, "SampleAuditSecurityEventType", UA_NODEID_NUMERIC(0, UA_NS0ID_AUDITSECURITYEVENTTYPE), ((UA_NodeId*) eventTypes)[1]);
+    retval = addEventType(server, "SampleAuditSecurityEventType", UA_NODEID_NUMERIC(0, UA_NS0ID_AUDITSECURITYEVENTTYPE), &eventTypes[1]);
     if (retval != UA_STATUSCODE_GOOD) return retval;
 
-    retval = addEventType(server, "SampleProgressEventType", UA_NODEID_NUMERIC(0, UA_NS0ID_PROGRESSEVENTTYPE), ((UA_NodeId*) eventTypes)[2]);
+    retval = addEventType(server, "SampleProgressEventType", UA_NODEID_NUMERIC(0, UA_NS0ID_PROGRESSEVENTTYPE), &eventTypes[2]);
     if (retval != UA_STATUSCODE_GOOD) return retval;
 
-    retval = addEventType(server, "SampleDeviceFailureEventType", UA_NODEID_NUMERIC(0, UA_NS0ID_DEVICEFAILUREEVENTTYPE), ((UA_NodeId*) eventTypes)[3]);
+    retval = addEventType(server, "SampleDeviceFailureEventType", UA_NODEID_NUMERIC(0, UA_NS0ID_DEVICEFAILUREEVENTTYPE), &eventTypes[3]);
     if (retval != UA_STATUSCODE_GOOD) return retval;
 
-    retval = addEventType(server, "SampleBaseEventType", UA_NODEID_NUMERIC(0, UA_NS0ID_BASEEVENTTYPE), ((UA_NodeId*) eventTypes)[4]);
+    retval = addEventType(server, "SampleBaseEventType", UA_NODEID_NUMERIC(0, UA_NS0ID_BASEEVENTTYPE), &eventTypes[4]);
     if (retval != UA_STATUSCODE_GOOD) return retval;
 
     return UA_STATUSCODE_GOOD;
 }
+
 
 /**
  * Setting up an event
@@ -97,7 +99,10 @@ setUpEvent(UA_Server *server, UA_NodeId *outId, UA_NodeId eventType, UA_Boolean 
     UA_Server_writeObjectProperty_scalar(server, *outId, UA_QUALIFIEDNAME(0, "Time"),
                                          &eventTime, &UA_TYPES[UA_TYPES_DATETIME]);
 
-    UA_UInt16 eventSeverity = 100;
+
+    UA_UInt16 eventSeverity;
+    if(random) eventSeverity = (UA_UInt16) rand() % 1000;
+    else eventSeverity = 100;
     UA_Server_writeObjectProperty_scalar(server, *outId, UA_QUALIFIEDNAME(0, "Severity"),
                                          &eventSeverity, &UA_TYPES[UA_TYPES_UINT16]);
 
@@ -111,7 +116,9 @@ setUpEvent(UA_Server *server, UA_NodeId *outId, UA_NodeId eventType, UA_Boolean 
     UA_UInt32 context;
     UA_String eventSourceName;
     UA_StatusCode statusCode;
-    UA_Boolean stat;
+    UA_Boolean Estatus = UA_Boolean_new();
+    UA_Boolean_init(&Estatus);
+
     UA_String serverId;
     UA_String clientUserId;
     UA_String clientAuditEntryId;
@@ -126,7 +133,8 @@ setUpEvent(UA_Server *server, UA_NodeId *outId, UA_NodeId eventType, UA_Boolean 
             break;
         case UA_NS0ID_PROGRESSEVENTTYPE:
             eventSourceName = UA_STRING("Service/Sample");
-            progress = 100;
+            if(random) progress = (UA_UInt16) rand() % 100;
+            else progress = 100;
             UA_Server_writeObjectProperty_scalar(server, *outId, UA_QUALIFIEDNAME(0, "Progress"),
                                                  &progress, &UA_TYPES[UA_TYPES_LOCALIZEDTEXT]);
             context = 0;
@@ -136,9 +144,9 @@ setUpEvent(UA_Server *server, UA_NodeId *outId, UA_NodeId eventType, UA_Boolean 
         case UA_NS0ID_AUDITSECURITYEVENTTYPE:
             UA_Server_writeObjectProperty_scalar(server, *outId, UA_QUALIFIEDNAME(0, "ActionTimeStamp"),
                                                  &eventTime, &UA_TYPES[UA_TYPES_DATETIME]);
-            stat = UA_TRUE;
+            Estatus = UA_TRUE;
             UA_Server_writeObjectProperty_scalar(server, *outId, UA_QUALIFIEDNAME(0, "Status"),
-                                                 &stat, &UA_TYPES[UA_TYPES_DATETIME]);
+                                                 &Estatus, &UA_TYPES[UA_TYPES_DATETIME]);
             serverId = UA_STRING("SampleServer");
             UA_Server_writeObjectProperty_scalar(server, *outId, UA_QUALIFIEDNAME(0, "ServerId"),
                                                  &serverId, &UA_TYPES[UA_TYPES_DATETIME]);
@@ -180,9 +188,11 @@ generateEventsMethodCallback(UA_Server *server,
     UA_LOG_INFO(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND, "Creating event");
 
     UA_StatusCode retval;
-    UA_NodeId* eventNodeId = (UA_NodeId*) UA_Array_new((size_t) eventTypesCount, &UA_TYPES[UA_TYPES_NODEID]);
+    UA_NodeId* eventNodeId;
+    eventNodeId = (UA_NodeId*)
+        UA_Array_new(eventTypesCount, &UA_TYPES[UA_TYPES_NODEID]);
     /* set up event */
-    for(int i = 0 ; i < eventTypesCount; i++) {
+    for(size_t i = 0 ; i < eventTypesCount; i++) {
         retval = setUpEvent(server, &eventNodeId[i], eventTypes[i], false);
         if(retval != UA_STATUSCODE_GOOD) {
             UA_LOG_WARNING(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND,
@@ -190,7 +200,7 @@ generateEventsMethodCallback(UA_Server *server,
             return retval;
         }
     }
-    for(int i = 0 ; i < eventTypesCount; i++) {
+    for(size_t i = 0 ; i < eventTypesCount; i++) {
         retval = UA_Server_triggerEvent(server, eventNodeId[i],
                                          UA_NODEID_NUMERIC(0, UA_NS0ID_SERVER),
                                          NULL, UA_TRUE);
@@ -202,34 +212,34 @@ generateEventsMethodCallback(UA_Server *server,
     return retval;
 }
 
-//static UA_StatusCode
-//generateRandomEventMethodCallback(UA_Server *server,
-//                             const UA_NodeId *sessionId, void *sessionHandle,
-//                             const UA_NodeId *methodId, void *methodContext,
-//                             const UA_NodeId *objectId, void *objectContext,
-//                             size_t inputSize, const UA_Variant *input,
-//                             size_t outputSize, UA_Variant *output) {
-//
-//    UA_LOG_INFO(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND, "Creating event");
-//    int random = rand() % eventTypesCount;
-//    /* set up event */
-//    UA_NodeId eventNodeId;
-//    UA_StatusCode retval = setUpEvent(server, &eventNodeId, eventTypes[random], true);
-//    if(retval != UA_STATUSCODE_GOOD) {
-//        UA_LOG_WARNING(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND,
-//                       "Creating event failed. StatusCode %s", UA_StatusCode_name(retval));
-//        return retval;
-//    }
-//
-//    retval = UA_Server_triggerEvent(server, eventNodeId,
-//                                    UA_NODEID_NUMERIC(0, UA_NS0ID_SERVER),
-//                                    NULL, UA_TRUE);
-//    if(retval != UA_STATUSCODE_GOOD)
-//        UA_LOG_WARNING(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND,
-//                       "Triggering event failed. StatusCode %s", UA_StatusCode_name(retval));
-//
-//    return retval;
-//}
+static UA_StatusCode
+generateRandomEventMethodCallback(UA_Server *server,
+                             const UA_NodeId *sessionId, void *sessionHandle,
+                             const UA_NodeId *methodId, void *methodContext,
+                             const UA_NodeId *objectId, void *objectContext,
+                             size_t inputSize, const UA_Variant *input,
+                             size_t outputSize, UA_Variant *output) {
+
+    UA_LOG_INFO(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND, "Creating event");
+    size_t random = rand() % eventTypesCount;
+    /* set up event */
+    UA_NodeId eventNodeId;
+    UA_StatusCode retval = setUpEvent(server, &eventNodeId, eventTypes[random], true);
+    if(retval != UA_STATUSCODE_GOOD) {
+        UA_LOG_WARNING(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND,
+                       "Creating event failed. StatusCode %s", UA_StatusCode_name(retval));
+        return retval;
+    }
+
+    retval = UA_Server_triggerEvent(server, eventNodeId,
+                                    UA_NODEID_NUMERIC(0, UA_NS0ID_SERVER),
+                                    NULL, UA_TRUE);
+    if(retval != UA_STATUSCODE_GOOD)
+        UA_LOG_WARNING(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND,
+                       "Triggering event failed. StatusCode %s", UA_StatusCode_name(retval));
+
+    return retval;
+}
 
 /**
  * Now, all that is left to do is to create a method node which uses our callback. We do not
@@ -254,20 +264,20 @@ addGenerateEventsMethod(UA_Server *server) {
                             0, NULL, 0, NULL, NULL, NULL);
 }
 
-//static void
-//addGenerateRandomEventMethod(UA_Server *server) {
-//    UA_MethodAttributes generateAttr = UA_MethodAttributes_default;
-//    generateAttr.description = UA_LOCALIZEDTEXT("en-US","Generate a random event out of all possible events on the Server.");
-//    generateAttr.displayName = UA_LOCALIZEDTEXT("en-US","Generate random Event");
-//    generateAttr.executable = true;
-//    generateAttr.userExecutable = true;
-//    UA_Server_addMethodNode(server, UA_NODEID_NUMERIC(1, 62541),
-//                            UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER),
-//                            UA_NODEID_NUMERIC(0, UA_NS0ID_HASCOMPONENT),
-//                            UA_QUALIFIEDNAME(1, "Generate random Event"),
-//                            generateAttr, &generateRandomEventMethodCallback,
-//                            0, NULL, 0, NULL, NULL, NULL);
-//}
+static void
+addGenerateRandomEventMethod(UA_Server *server) {
+    UA_MethodAttributes generateAttr = UA_MethodAttributes_default;
+    generateAttr.description = UA_LOCALIZEDTEXT("en-US","Generate a random event out of all possible events on the Server.");
+    generateAttr.displayName = UA_LOCALIZEDTEXT("en-US","Generate random Event");
+    generateAttr.executable = true;
+    generateAttr.userExecutable = true;
+    UA_Server_addMethodNode(server, UA_NODEID_NUMERIC(1, 62541),
+                            UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER),
+                            UA_NODEID_NUMERIC(0, UA_NS0ID_HASCOMPONENT),
+                            UA_QUALIFIEDNAME(1, "Generate random Event"),
+                            generateAttr, &generateRandomEventMethodCallback,
+                            0, NULL, 0, NULL, NULL, NULL);
+}
 
 /** It follows the main server code, making use of the above definitions. */
 
@@ -285,7 +295,7 @@ int main (void) {
     UA_ServerConfig_setDefault(UA_Server_getConfig(server));
 
     addSampleEventTypes(server);
-//    addGenerateRandomEventMethod(server);
+    addGenerateRandomEventMethod(server);
     addGenerateEventsMethod(server);
 
     UA_StatusCode retval = UA_Server_run(server, &running);
