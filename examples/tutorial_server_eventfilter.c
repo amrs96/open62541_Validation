@@ -221,7 +221,7 @@ generateRandomEventMethodCallback(UA_Server *server,
                              size_t outputSize, UA_Variant *output) {
 
     UA_LOG_INFO(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND, "Creating event");
-    size_t random = rand() % eventTypesCount;
+    size_t random = (size_t) rand() % eventTypesCount;
     /* set up event */
     UA_NodeId eventNodeId;
     UA_StatusCode retval = setUpEvent(server, &eventNodeId, eventTypes[random], true);

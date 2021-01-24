@@ -207,7 +207,6 @@ int main(int argc, char *argv[]) {
 
 
 
-
     item.requestedParameters.filter.encoding = UA_EXTENSIONOBJECT_DECODED;
     item.requestedParameters.filter.content.decoded.data = &filter;
     item.requestedParameters.filter.content.decoded.type = &UA_TYPES[UA_TYPES_EVENTFILTER];
