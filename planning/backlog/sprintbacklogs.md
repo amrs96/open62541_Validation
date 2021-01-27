@@ -26,8 +26,8 @@
     - Function calls of UA_filterEvent
     - EventTypes (subtypes of BaseEventType)
 - Gantt diagram
-## Sprint 4: 22.01 - 28.01
-### Start Development
+## Sprint 4: 22.01 - 25.02.
+### Development - Validation
 - validate selectClauses when the EventFilter is created or updated. (See EventFilterResult result codes)
      - **return general errors** (true for all selected values) in the selectClauseResults parameter
      - **do not return** errors for unknown EventTypes or BrowsePaths, **if** not all EventTypes are known to the Server yet
