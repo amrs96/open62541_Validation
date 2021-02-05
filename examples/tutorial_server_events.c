@@ -32,7 +32,7 @@ addNewEventType(UA_Server *server) {
     attr.displayName = UA_LOCALIZEDTEXT("en-US", "SimpleEventType");
     attr.description = UA_LOCALIZEDTEXT("en-US", "The simple event type we created");
     return UA_Server_addObjectTypeNode(server, UA_NODEID_NULL,
-                                       UA_NODEID_NUMERIC(0, UA_NS0ID_AUDITEVENTTYPE),
+                                       UA_NODEID_NUMERIC(0, UA_NS0ID_BASEEVENTTYPE),
                                        UA_NODEID_NUMERIC(0, UA_NS0ID_HASSUBTYPE),
                                        UA_QUALIFIEDNAME(0, "SimpleEventType"),
                                        attr, NULL, &eventType);
@@ -87,11 +87,11 @@ setUpEvent(UA_Server *server, UA_NodeId *outId) {
  * The last boolean argument states whether the node should be deleted. */
 static UA_StatusCode
 generateEventMethodCallback(UA_Server *server,
-                         const UA_NodeId *sessionId, void *sessionHandle,
-                         const UA_NodeId *methodId, void *methodContext,
-                         const UA_NodeId *objectId, void *objectContext,
-                         size_t inputSize, const UA_Variant *input,
-                         size_t outputSize, UA_Variant *output) {
+                            const UA_NodeId *sessionId, void *sessionHandle,
+                            const UA_NodeId *methodId, void *methodContext,
+                            const UA_NodeId *objectId, void *objectContext,
+                            size_t inputSize, const UA_Variant *input,
+                            size_t outputSize, UA_Variant *output) {
 
     UA_LOG_INFO(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND, "Creating event");
 
@@ -108,7 +108,7 @@ generateEventMethodCallback(UA_Server *server,
                                     UA_NODEID_NUMERIC(0, UA_NS0ID_SERVER),
                                     NULL, UA_TRUE);
     if(retval != UA_STATUSCODE_GOOD)
-        UA_LOG_WARNING(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND, 
+        UA_LOG_WARNING(UA_Log_Stdout, UA_LOGCATEGORY_USERLAND,
                        "Triggering event failed. StatusCode %s", UA_StatusCode_name(retval));
 
     return retval;
